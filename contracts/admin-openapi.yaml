@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: SafetyPad admin API (browser SPA)
+  version: 0.1.0
+  description: >-
+    Used only by the React dashboard. Authentication is a server session (httpOnly cookie SPSESSION) plus a CSRF token:
+    call GET /csrf first, then send the XSRF-TOKEN cookie value in the X-XSRF-TOKEN header on every non-GET request.
+    A device X-API-Key never grants access here. All JSON fields are snake_case, all instants are ISO-8601 in Asia/Seoul (+09:00).
+servers:
+  - url: http://localhost:8080
+security: [{SessionCookie: []}]
+paths:
+  /api/v1/admin/csrf:
+    get:
+      summary: Issue CSRF cookie and token
+      security: []
+      responses: {'200': {description: "{header_name, token}"}}
+  /api/v1/admin/login:
+    post:
+      summary: Log in (CSRF token required)
+      security: []
+      requestBody:
+        required: true
+        content: {application/json: {schema: {type: object, required: [username, password], properties: {username: {type: string}, password: {type: string}}}}}
+      responses:
+        '200': {description: "{username, role}; sets SPSESSION cookie"}
+        '401': {description: Invalid username or password (identical for unknown user and wrong password)}
+        '403': {description: Missing or invalid CSRF token}
+        '429': {description: 10 failed attempts per minute per IP+username}
+  /api/v1/admin/logout:
+    post: {summary: End session, responses: {'200': {description: ok}}}
+  /api/v1/admin/me:
+    get: {summary: Current admin, responses: {'200': {description: "{username, role}"}, '401': {description: Not logged in}}}
+  /api/v1/admin/summary:
+    get:
+      summary: KPI, 7-day KST trend, top devices, lag distribution
+      description: >-
+        devices_received_last_24h counts devices that SENT something in the last 24 h. It is NOT an online count
+        (no heartbeat is agreed). simulated_data_present drives the 가상 데이터 badge.
+      responses: {'200': {description: ok}}
+  /api/v1/admin/events:
+    get:
+      summary: Search violation events
+      parameters:
+        - {name: from, in: query, schema: {type: string, format: date}, description: Asia/Seoul calendar day, inclusive}
+        - {name: to, in: query, schema: {type: string, format: date}, description: Asia/Seoul calendar day, inclusive}
+        - {name: device_id, in: query, schema: {type: string, maxLength: 64}, description: case-insensitive substring}
+        - {name: min_lag_seconds, in: query, schema: {type: integer}}
+        - {name: has_gps, in: query, schema: {type: boolean}}
+        - {name: sort, in: query, schema: {type: string, enum: [event_time, received_at, device_id], default: event_time}}
+        - {name: dir, in: query, schema: {type: string, enum: [asc, desc], default: desc}}
+        - {name: page, in: query, schema: {type: integer, minimum: 0, default: 0}}
+        - {name: size, in: query, schema: {type: integer, minimum: 1, maximum: 200, default: 50}}
+      responses: {'200': {description: "Page {items, page, size, total}. Events without GPS are included (latitude/longitude null)."}, '400': {description: Invalid parameter}}
+  /api/v1/admin/events/{id}:
+    get: {summary: One event, parameters: [{name: id, in: path, required: true, schema: {type: integer}}], responses: {'200': {description: ok}, '404': {description: not found}}}
+  /api/v1/admin/events/export.csv:
+    get:
+      summary: CSV export of the same filters (audited)
+      description: UTF-8 with BOM, CRLF, text cells quoted and formula-neutralised. Max 50,000 rows; X-Export-Truncated tells if cut.
+      responses: {'200': {description: text/csv}}
+  /api/v1/admin/devices:
+    get: {summary: List devices with last received time, battery and last known violation GPS, responses: {'200': {description: ok}}}
+    post:
+      summary: Register a device
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [device_id], properties: {device_id: {type: string}, alias: {type: string}, zone: {type: string}}}}}}
+      responses: {'201': {description: created}, '409': {description: exists}, '422': {description: invalid device_id}}
+  /api/v1/admin/devices/{deviceId}:
+    get: {summary: Device detail with credential metadata (never keys or digests), responses: {'200': {description: ok}, '404': {description: not found}}}
+  /api/v1/admin/devices/{deviceId}/credentials:
+    post:
+      summary: Issue a new device API key (shown ONCE)
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [confirm], properties: {confirm: {type: boolean}}}}}}
+      responses: {'201': {description: "{credential_id, key_prefix, api_key, notice}"}, '400': {description: confirm missing}}
+  /api/v1/admin/devices/{deviceId}/credentials/{credentialId}/revoke:
+    post: {summary: Revoke a key (needs confirm=true), responses: {'200': {description: ok}, '404': {description: not found}}}
+  /api/v1/admin/devices/{deviceId}/active:
+    post: {summary: Enable or disable a device, requestBody: {required: true, content: {application/json: {schema: {type: object, required: [active], properties: {active: {type: boolean}}}}}}, responses: {'200': {description: ok}}}
+  /api/v1/admin/dev/import-demo:
+    post: {summary: "DEV PROFILE ONLY - import fictional 가상 데이터", responses: {'200': {description: counts}, '404': {description: absent outside dev}}}
+  /api/v1/admin/dev/reset-demo:
+    post: {summary: "DEV PROFILE ONLY - delete simulated events/pings (confirm=RESET_DEMO_DATA)", responses: {'200': {description: counts}}}
+components:
+  securitySchemes:
+    SessionCookie: {type: apiKey, in: cookie, name: SPSESSION}

@@ -1,0 +1,63 @@
+# Edge: automatic HTTPS (Let's Encrypt for a public DOMAIN, internal CA for localhost), static SPA, API proxy.
+{
+	# Behind a load balancer (e.g. AWS ALB) list its CIDRs here so X-Forwarded-For is trusted:
+	#   servers { trusted_proxies static {$TRUSTED_PROXIES} }
+	# Optional: give Let's Encrypt a contact for expiry notices (an empty value is a parse error, so it is not templated):
+	#   email ops@your-domain.example
+}
+
+{$DOMAIN:localhost} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "same-origin"
+		Permissions-Policy "geolocation=(), camera=(), microphone=()"
+		Content-Security-Policy "default-src 'self'; img-src 'self' data: https://*.daumcdn.net https://*.kakao.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; script-src 'self' https://dapi.kakao.com https://t1.kakaocdn.net https://*.daumcdn.net; connect-src 'self' https://*.kakao.com https://*.daumcdn.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+		-Server
+	}
+
+	# Access log WITHOUT request headers: X-API-Key, cookies and CSRF tokens must never reach log storage.
+	log {
+		output stdout
+		format filter {
+			wrap json
+			fields {
+				request>headers delete
+				resp_headers delete
+			}
+		}
+	}
+
+	# Never publish metrics, demo tooling or Swagger through the public edge.
+	@blocked path /actuator/prometheus /actuator/prometheus/* /api/v1/admin/dev/* /swagger.html /api-docs/*
+	handle @blocked {
+		respond "Not found" 404
+	}
+
+	handle /api/v1/device-events {
+		request_body {
+			max_size 16KB
+		}
+		reverse_proxy backend:8080
+	}
+
+	handle /api/* {
+		request_body {
+			max_size 64KB
+		}
+		reverse_proxy backend:8080
+	}
+
+	handle /actuator/health* {
+		reverse_proxy backend:8080
+	}
+
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

@@ -1,0 +1,54 @@
+# Local development stack. Requires a .env file (copy .env.example). Never use these defaults in production.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-safetypad}
+      POSTGRES_USER: ${DB_USER:-safetypad}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set in .env}
+      TZ: UTC
+    ports:
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-safetypad} -d ${DB_NAME:-safetypad}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    profiles: ["full"]
+    build: ./backend
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-safetypad}
+      DB_USER: ${DB_USER:-safetypad}
+      DB_PASSWORD: ${DB_PASSWORD:?}
+      DEVICE_KEY_PEPPER: ${DEVICE_KEY_PEPPER:?DEVICE_KEY_PEPPER must be set in .env}
+      ADMIN_BOOTSTRAP_USERNAME: ${ADMIN_BOOTSTRAP_USERNAME:-}
+      ADMIN_BOOTSTRAP_PASSWORD: ${ADMIN_BOOTSTRAP_PASSWORD:-}
+      SIMULATED_DATA_ENABLED: ${SIMULATED_DATA_ENABLED:-false}
+      MAP_PROVIDER: ${MAP_PROVIDER:-mock}
+      MAP_API_KEY: ${MAP_API_KEY:-}
+      SAFETYPAD_DEMO_DATA_DIR: /data
+      SAFETYPAD_DOCS_CONTRACTS_DIR: /contracts
+    volumes:
+      - ./data:/data:ro
+      - ./contracts:/contracts:ro
+    depends_on:
+      postgres: { condition: service_healthy }
+    ports:
+      - "127.0.0.1:8080:8080"
+
+  frontend:
+    profiles: ["full"]
+    build: ./frontend
+    depends_on: [backend]
+    ports:
+      - "127.0.0.1:5173:80"
+
+volumes:
+  pgdata:

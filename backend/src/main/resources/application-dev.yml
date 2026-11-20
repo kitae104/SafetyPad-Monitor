@@ -1,0 +1,10 @@
+# Local development only. Never activate on a server reachable from the internet.
+server.servlet.session.cookie.secure: false   # plain http://localhost
+safetypad:
+  mqtt:                                   # plain-text MQTT on loopback is allowed for local development only
+    allow-plaintext: true
+    host: ${MQTT_HOST:127.0.0.1}
+    port: ${MQTT_PORT:1883}
+    tls-port: ${MQTT_TLS_PORT:0}
+  simulated-data-enabled: ${SIMULATED_DATA_ENABLED:true}
+  route-enabled: ${ROUTE_ENABLED:true}

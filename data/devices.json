@@ -1,0 +1,402 @@
+[
+  {
+    "device_id": "PAD-0001",
+    "alias": "테스트 발판 01",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 20,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0002",
+    "alias": "테스트 발판 02",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 54,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0003",
+    "alias": "테스트 발판 03",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 19,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0004",
+    "alias": "테스트 발판 04",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 17,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0005",
+    "alias": "테스트 발판 05",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 36,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0006",
+    "alias": "테스트 발판 06",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 54,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0007",
+    "alias": "테스트 발판 07",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 41,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0008",
+    "alias": "테스트 발판 08",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 58,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0009",
+    "alias": "테스트 발판 09",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 50,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0010",
+    "alias": "테스트 발판 10",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 68,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0011",
+    "alias": "테스트 발판 11",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 28,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0012",
+    "alias": "테스트 발판 12",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 18,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0013",
+    "alias": "테스트 발판 13",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 19,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0014",
+    "alias": "테스트 발판 14",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 74,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0015",
+    "alias": "테스트 발판 15",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 35,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0016",
+    "alias": "테스트 발판 16",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 71,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0017",
+    "alias": "테스트 발판 17",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 35,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0018",
+    "alias": "테스트 발판 18",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 73,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0019",
+    "alias": "테스트 발판 19",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 37,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0020",
+    "alias": "테스트 발판 20",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 25,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0021",
+    "alias": "테스트 발판 21",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 95,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0022",
+    "alias": "테스트 발판 22",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 90,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0023",
+    "alias": "테스트 발판 23",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 65,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0024",
+    "alias": "테스트 발판 24",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 40,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0025",
+    "alias": "테스트 발판 25",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 47,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0026",
+    "alias": "테스트 발판 26",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 61,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0027",
+    "alias": "테스트 발판 27",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 26,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0028",
+    "alias": "테스트 발판 28",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 31,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0029",
+    "alias": "테스트 발판 29",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 24,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0030",
+    "alias": "테스트 발판 30",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 31,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0031",
+    "alias": "테스트 발판 31",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 57,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0032",
+    "alias": "테스트 발판 32",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 55,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0033",
+    "alias": "테스트 발판 33",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 39,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0034",
+    "alias": "테스트 발판 34",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 51,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0035",
+    "alias": "테스트 발판 35",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 62,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0036",
+    "alias": "테스트 발판 36",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 57,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0037",
+    "alias": "테스트 발판 37",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 27,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0038",
+    "alias": "테스트 발판 38",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 16,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0039",
+    "alias": "테스트 발판 39",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 87,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0040",
+    "alias": "테스트 발판 40",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 88,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0041",
+    "alias": "테스트 발판 41",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 95,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0042",
+    "alias": "테스트 발판 42",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 33,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0043",
+    "alias": "테스트 발판 43",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 70,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0044",
+    "alias": "테스트 발판 44",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 19,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0045",
+    "alias": "테스트 발판 45",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 21,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0046",
+    "alias": "테스트 발판 46",
+    "zone": "인하공전 주변 북측",
+    "active": true,
+    "battery_level": 16,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0047",
+    "alias": "테스트 발판 47",
+    "zone": "인하공전 주변 동측",
+    "active": true,
+    "battery_level": 73,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0048",
+    "alias": "테스트 발판 48",
+    "zone": "인하공전 주변 남측",
+    "active": true,
+    "battery_level": 96,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0049",
+    "alias": "테스트 발판 49",
+    "zone": "인하공전 주변 서측",
+    "active": true,
+    "battery_level": 53,
+    "simulated": true
+  },
+  {
+    "device_id": "PAD-0050",
+    "alias": "테스트 발판 50",
+    "zone": "용현동 일대",
+    "active": true,
+    "battery_level": 82,
+    "simulated": true
+  }
+]

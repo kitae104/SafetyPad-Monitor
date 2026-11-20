@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: SafetyPad device ingestion API (draft contract)
+  version: 0.1.0
+  description: >-
+    Firmware supplier approval required. REST-only working assumption; GPS periodic endpoint is optional expansion.
+servers:
+  - url: https://api.example.com
+paths:
+  /api/v1/device-events:
+    post:
+      tags: [IoT Ingestion]
+      summary: Upload one multi-rider violation event
+      security: [{DeviceApiKey: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/EventRequest'}
+      responses:
+        '200':
+          description: Successfully accepted, including a previously committed duplicate
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EventAck'}
+        '400': {description: 'Invalid JSON, missing required field, or unknown field', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '401': {description: Missing, unknown, revoked or expired API key, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '403': {description: 'API key is not associated with device_id, or device is disabled', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '413': {description: 'Body larger than 8192 bytes', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '422': {description: 'Semantically invalid payload (range, timezone, time window, event_type)', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '429': {description: 'Too many requests; honour Retry-After', headers: {Retry-After: {schema: {type: integer}}}}
+        '503': {description: 'Temporary service unavailable; retry the SAME event_id safely', headers: {Retry-After: {schema: {type: integer}}}}
+  /api/v1/device-locations:
+    post:
+      tags: [Optional future telemetry]
+      summary: Optional periodic GPS fix (not part of original device protocol)
+      description: Disabled for real devices until firmware GPS-ping contract is approved.
+      security: [{DeviceApiKey: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/LocationRequest'}
+      responses:
+        '200': {description: Saved or previously accepted sample}
+        '401': {description: Invalid device API key}
+        '403': {description: Key does not match device}
+        '422': {description: Invalid GPS position}
+components:
+  securitySchemes:
+    DeviceApiKey: {type: apiKey, in: header, name: X-API-Key}
+  schemas:
+    GPS:
+      type: object
+      required: [latitude, longitude]
+      properties:
+        latitude: {type: number, minimum: -90, maximum: 90, example: 37.451448}
+        longitude: {type: number, minimum: -180, maximum: 180, example: 126.651542}
+    EventRequest:
+      type: object
+      additionalProperties: false
+      required: [event_id, device_id, event_time]
+      properties:
+        event_id: {type: string, maxLength: 100, example: PAD-0001-EVT-00001}
+        device_id: {type: string, maxLength: 64, example: PAD-0001}
+        event_type: {type: string, enum: [MULTI_RIDE], default: MULTI_RIDE}
+        event_time: {type: string, format: date-time, description: 'Device-generated ISO-8601 WITH timezone offset. Accepted window: not more than 10 min in the future, not older than 366 days.', example: '2026-11-05T14:30:10+09:00'}
+        gpsData:
+          oneOf: [{$ref: '#/components/schemas/GPS'}, {type: string, enum: ['']}]
+          nullable: true
+          description: Final representation requires device firmware agreement.
+        battery_level: {type: integer, minimum: 0, maximum: 100, nullable: true}
+    Error:
+      type: object
+      required: [success, error, message]
+      properties:
+        success: {type: boolean, example: false}
+        error: {type: string, example: UNPROCESSABLE}
+        message: {type: string}
+        request_id: {type: string, description: Server generated id for support correlation}
+    EventAck:
+      type: object
+      required: [success, event_id, duplicate]
+      properties:
+        success: {type: boolean, example: true}
+        event_id: {type: string, example: PAD-0001-EVT-00001}
+        duplicate: {type: boolean, example: false}
+    LocationRequest:
+      type: object
+      required: [location_id, device_id, recorded_at, gpsData]
+      properties:
+        location_id: {type: string}
+        device_id: {type: string}
+        recorded_at: {type: string, format: date-time}
+        gpsData: {$ref: '#/components/schemas/GPS'}
