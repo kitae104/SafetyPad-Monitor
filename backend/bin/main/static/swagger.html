@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>SafetyPad API (dev)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.34.1/swagger-ui.css">
+</head>
+<body>
+  <!-- Served only under the dev profile. Loads Swagger UI from a pinned CDN version. -->
+  <div id="ui"></div>
+  <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.34.1/swagger-ui-bundle.js"></script>
+  <script>
+    window.ui = SwaggerUIBundle({
+      urls: [
+        { url: '/api-docs/openapi.yaml', name: 'Device ingestion' },
+        { url: '/api-docs/admin-openapi.yaml', name: 'Admin API' }
+      ],
+      dom_id: '#ui'
+    });
+  </script>
+</body>
+</html>

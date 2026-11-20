@@ -202,7 +202,10 @@ export function KeylessMap({ points, selectedDeviceId, onSelectDevice, route, he
         <MapInfoCard info={info} pinned={infoPinned} selectedDeviceId={selectedDeviceId} onSelectDevice={onSelectDevice} onClose={() => setPinnedId(null)} className="absolute bottom-9 left-2 max-w-[calc(100%-4.5rem)] sm:max-w-sm" />
       )}
       {points.length === 0 && !routePts.length && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-slate-500">표시할 GPS 위반 지점이 없습니다</div>
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1 px-4 text-center text-sm text-slate-500">
+          <span>표시할 GPS 위반 지점이 없습니다</span>
+          <span className="text-xs">운영 환경에는 가상 데이터가 없으며, GPS 좌표가 포함된 실제 위반 이벤트가 수신되면 표시됩니다.</span>
+        </div>
       )}
     </div>
   )

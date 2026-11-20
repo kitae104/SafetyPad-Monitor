@@ -1,0 +1,4 @@
+logging:
+  structured.format.console: logstash   # JSON lines incl. MDC requestId, for CloudWatch/Loki ingestion
+server.forward-headers-strategy: none     # set to "framework" only behind a proxy that overwrites X-Forwarded-*
+safetypad.simulated-data-enabled: false   # hard off, even if the env var is set

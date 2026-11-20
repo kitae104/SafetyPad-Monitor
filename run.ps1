@@ -1,6 +1,6 @@
-<#
+﻿<#
 .SYNOPSIS
-  SafetyPad Monitor - 개발 서버 기동/종료 (PowerShell 7+, Windows/Linux/macOS)
+  SafetyPad Monitor - 개발 서버 기동/종료 (PowerShell 5.1/7+, Windows/Linux/macOS)
 
 .DESCRIPTION
   .\run.ps1 start   [all|db|backend|frontend]   기본: all (DB -> 백엔드 -> 프런트)
@@ -10,7 +10,7 @@
   .\run.ps1 logs    [backend|frontend]          로그 따라가기 (Ctrl+C로 중단)
 
   개발 프로파일 전용입니다(.env 의 SPRING_PROFILES_ACTIVE=dev). 프로세스는 PID 파일이 아니라 "리슨 포트"로 찾습니다.
-  필요한 것: Docker(Compose v2), Java 21, Node 22+, PowerShell 7+ (Windows PowerShell 5.1 은 지원하지 않음).
+  필요한 것: Docker(Compose v2), Java 21, Node 22+, PowerShell 5.1 또는 7+.
   ※ .env 가 없으면 만들어 주지 않습니다(Linux/macOS 는 make env, Windows 는 .env.example 을 복사해 값을 채우세요).
 #>
 [CmdletBinding()]
@@ -19,6 +19,10 @@ param(
   [Parameter(Position = 1)][string]$Target = ''
 )
 $ErrorActionPreference = 'Stop'
+# Windows PowerShell 5.1 은 네이티브 명령(docker 등)의 stderr 출력을 종료 오류로 취급하므로 Continue 로 두고 $LASTEXITCODE 로 판단한다.
+if ($PSVersionTable.PSEdition -eq 'Desktop') { $ErrorActionPreference = 'Continue' }
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)   # 한글 출력 깨짐 방지
+$OutputEncoding = [Console]::OutputEncoding
 Set-Location $PSScriptRoot
 
 $BackendPort = 8080
@@ -81,7 +85,7 @@ function Start-Db {
   Import-DotEnv
   & docker compose up -d --wait postgres *> $null
   if ($LASTEXITCODE -ne 0) { Fail 'DB 기동 실패 (docker compose logs postgres 확인)' }
-  Write-Host "DB        실행 중 (localhost:$($env:DB_PORT ?? '5433'))"
+  Write-Host "DB        실행 중 (localhost:$(if ($env:DB_PORT) { $env:DB_PORT } else { '5433' }))"
 }
 
 function Stop-Db {
